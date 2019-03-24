@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cgz.newsclient.domain.NewsItem;
+import com.cgz.newsclient.view.SmartImageView;
 
 import java.io.InputStream;
 import java.lang.reflect.Type;
@@ -154,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
             View view = View.inflate(MainActivity.this, R.layout.news_item, null);
 
             //千万要注意，一定要使用view点，默认是使用当前activity
-            ImageView iv = view.findViewById(R.id.iv_img);
+            SmartImageView iv = view.findViewById(R.id.iv_img);
             TextView tv_title = view.findViewById(R.id.tv_title);
             TextView tv_desc =  view.findViewById(R.id.tv_desc);
             TextView tv_type =  view.findViewById(R.id.tv_type);
@@ -162,6 +163,9 @@ public class MainActivity extends AppCompatActivity {
             tv_title.setText(mNewsItems.get(position).getTitle());
             tv_desc.setText(mNewsItems.get(position).getDesc());
             String type = mNewsItems.get(position).getType();
+            iv.setImageUrlAndShow(mNewsItems.get(position).getImagePath());
+
+
 
             if ("1".equals(type)) {
                 tv_type.setText("评论："+ mNewsItems.get(position).getCommentCount());
