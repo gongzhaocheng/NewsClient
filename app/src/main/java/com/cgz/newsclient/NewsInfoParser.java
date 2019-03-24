@@ -45,8 +45,8 @@ class NewsInfoParser {
                         newsItem.setDesc(parser.nextText());
                     }else if ("image".equals(parser.getName())){
                             newsItem.setImagePath(parser.nextText());
-                    }else if ("title".equals(parser.getName())) {
-                        newsItem.setTitle(parser.nextText());
+                    }else if ("type".equals(parser.getName())) {
+                        newsItem.setType(parser.nextText());
                     }else if ("comment".equals(parser.getName())){
                         String countstr = parser.nextText();  //防御式编程
                         if (TextUtils.isDigitsOnly(countstr)) {
