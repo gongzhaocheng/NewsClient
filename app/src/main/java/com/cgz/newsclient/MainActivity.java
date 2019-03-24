@@ -64,6 +64,10 @@ public class MainActivity extends AppCompatActivity {
                         System.out.println("请求成功");
                         InputStream is = conn.getInputStream();
 
+
+                        mNewsItems = NewsInfoParser.getAllNewsInfos(is);
+                        System.out.println(mNewsItems);
+
                     } else {
                         // 请求失败
                         System.out.println("请求失败");
