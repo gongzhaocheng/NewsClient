@@ -1,6 +1,8 @@
 package com.cgz.newsclient;
 
 import android.graphics.Color;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cgz.newsclient.domain.NewsItem;
 
@@ -28,6 +31,31 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout mLLoading;
     private ListView mLv;
     private ArrayList<NewsItem> mNewsItems;
+
+    private Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            // 隐藏进度条
+            mLLoading.setVisibility(View.INVISIBLE);
+            switch (msg.what) {
+                case SHOW_NEWS:
+                    Toast.makeText(MainActivity.this,"加载数据成功",Toast.LENGTH_SHORT).show();
+                    mAdapter.notifyDataSetChanged();
+                    break;
+
+                case LOAD_ERROR:
+                    Toast.makeText(MainActivity.this,"获取数据失败",Toast.LENGTH_SHORT).show();
+                    break;
+
+                default:
+                    break;
+            }
+
+        }
+    };
+    private static final int SHOW_NEWS = 1;
+    private static final int LOAD_ERROR = 2;
+    private MyNewsAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,16 +94,26 @@ public class MainActivity extends AppCompatActivity {
 
 
                         mNewsItems = NewsInfoParser.getAllNewsInfos(is);
-                        System.out.println(mNewsItems);
+//                        System.out.println(mNewsItems);
+
+                        //更新界面，把新闻显示到UI上
+                        Message msg = Message.obtain();
+                        msg.what = SHOW_NEWS;
+                        mHandler.sendMessage(msg);
 
                     } else {
                         // 请求失败
                         System.out.println("请求失败");
-
+                        Message msg = Message.obtain();
+                        msg.what = LOAD_ERROR;
+                        mHandler.sendMessage(msg);
 
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                    Message msg = Message.obtain();
+                    msg.what = LOAD_ERROR;
+                    mHandler.sendMessage(msg);
                 }
 
             }
@@ -91,17 +129,18 @@ public class MainActivity extends AppCompatActivity {
         mLv = findViewById(R.id.lv_news);
         mLLoading.setVisibility(View.VISIBLE);
         mNewsItems = new ArrayList<>();
-        for (int i = 0; i < 10 ; i++) {
-            NewsItem item = new NewsItem();
-            item.setTitle("苹果发布了新手机");
-            item.setDesc("今天库克发布了新手机，引起了粉丝轰动");
-            item.setImagePath("http://192.168.102.115/img/a.jpg");
-            item.setCommentCount(200);
-            item.setType("3");
-            mNewsItems.add(item);
-        }
+//        for (int i = 0; i < 10 ; i++) {
+//            NewsItem item = new NewsItem();
+//            item.setTitle("苹果发布了新手机");
+//            item.setDesc("今天库克发布了新手机，引起了粉丝轰动");
+//            item.setImagePath("http://192.168.102.115/img/a.jpg");
+//            item.setCommentCount(200);
+//            item.setType("3");
+//            mNewsItems.add(item);
+//        }
         //设置ListView的数据
-        mLv.setAdapter(new MyNewsAdapter());
+        mAdapter = new MyNewsAdapter();
+        mLv.setAdapter(mAdapter);
     }
 
     private class MyNewsAdapter extends BaseAdapter {
