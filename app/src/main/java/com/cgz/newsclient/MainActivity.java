@@ -6,11 +6,14 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.cgz.newsclient.domain.NewsItem;
+
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -74,6 +77,16 @@ public class MainActivity extends AppCompatActivity {
         mLLoading = findViewById(R.id.ll_loading); //快捷键 command +option + f
         mLv = findViewById(R.id.lv_news);
         mLLoading.setVisibility(View.VISIBLE);
+        ArrayList<NewsItem> newsItems = new ArrayList<>();
+        for (int i = 0; i < 10 ; i++) {
+            NewsItem item = new NewsItem();
+            item.setTitle("苹果发布了新手机");
+            item.setDesc("今天库克发布了新手机，引起了粉丝轰动");
+            item.setImagePath("http://192.168.102.115/img/a.jpg");
+            item.setCommentCount(200);
+            newsItems.add(item);
+        }
+
 
     }
 }
