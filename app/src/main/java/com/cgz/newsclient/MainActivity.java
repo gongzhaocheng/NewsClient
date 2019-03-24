@@ -6,6 +6,12 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+
 public class MainActivity extends AppCompatActivity {
 
     private LinearLayout mLLoading;
@@ -23,6 +29,41 @@ public class MainActivity extends AppCompatActivity {
         // 4.将实体对象显示到界面
 
         initView();
+        loadNewsInfo();
+    }
+
+    /**
+     * 获取新闻信息
+     */
+    private void loadNewsInfo() {
+        new Thread(){
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL("http://192.168.102.115:80/news.xml");
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("GET");
+//                    设置一个读取超时时间20秒
+                    conn.setReadTimeout(20000);
+
+                    int code = conn.getResponseCode();
+                    if (code == 200) {
+                        // 请求成功
+                        System.out.println("请求成功");
+                        InputStream is = conn.getInputStream();
+
+                    } else {
+                        // 请求失败
+                        System.out.println("请求失败");
+
+
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }.start();
     }
 
     /**
