@@ -160,15 +160,16 @@ public class MainActivity extends AppCompatActivity {
             TextView tv_desc =  view.findViewById(R.id.tv_desc);
             TextView tv_type =  view.findViewById(R.id.tv_type);
 
-            tv_title.setText(mNewsItems.get(position).getTitle());
-            tv_desc.setText(mNewsItems.get(position).getDesc());
-            String type = mNewsItems.get(position).getType();
-            iv.setImageUrlAndShow(mNewsItems.get(position).getImagePath());
+            NewsItem item = getItem(position);
+            tv_title.setText(item.getTitle());
+            tv_desc.setText(item.getDesc());
+            String type = item.getType();
+            iv.setImageUrlAndShow(item.getImagePath());
 
 
 
             if ("1".equals(type)) {
-                tv_type.setText("评论："+ mNewsItems.get(position).getCommentCount());
+                tv_type.setText("评论："+ item.getCommentCount());
                 tv_type.setBackgroundColor(Color.TRANSPARENT);
                 tv_type.setTextColor(Color.BLACK);
             } else if ("2".equals(type)){
