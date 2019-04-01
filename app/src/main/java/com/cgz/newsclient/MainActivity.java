@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    URL url = new URL("http://192.168.102.115:80/news.xml");
+                    URL url = new URL("http://192.168.102.115:8080/Day10/news.xml");
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     conn.setRequestMethod("GET");
 //                    设置一个读取超时时间20秒
